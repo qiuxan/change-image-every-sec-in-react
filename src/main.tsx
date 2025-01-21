@@ -1,17 +1,42 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import './index.css'
-const imgIndexes =[0,1,2]
+import  src1 from './assets/1.jpg'
+import  src2 from './assets/2.jpg'
+import  src3 from './assets/3.jpg'
+
+
+const srcs =[src1, src2, src3]
 
 let index = 0
+let timer: number | undefined;
 
-setInterval(() => {
-  index = (index + 1) % imgIndexes.length
-  createRoot(document.getElementById('root')!).render(
+const container = document.getElementById('root');
+const root = createRoot(container!);
+
+function render(){
+  root.render(
     <StrictMode>
-      <img src={`src/assets/${index+1}.jpg`} alt={`Image ${index+1}`} />
+      <img src={srcs[index]} alt='' />
     </StrictMode>,
   )
-}, 1000)
+}
+
+function start(){
+    stop();
+    timer = setInterval(() => {
+      render();
+      index =(index + 1) % srcs.length;
+  }, 1000)
+}
+
+function stop(){
+  clearInterval(timer);
+}
+
+start();
+
+container?.addEventListener('mouseenter', stop);
+container?.addEventListener('mouseleave', start);
 
 
